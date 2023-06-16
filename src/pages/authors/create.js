@@ -10,6 +10,7 @@ import AppLayout from "@/components/Layouts/AppLayout";
 import Head from "next/head";
 import AuthValidationErrors from "../AuthValidationErrors";
 import PreviousLink from "@/components/PreviousLink";
+import ImageInput from "@/components/ImageInput";
 
 const Create = () => {
     const router = useRouter()
@@ -18,6 +19,8 @@ const Create = () => {
     const [birth_date, setBirthDate] = useState('')
     const [country, setCountry] = useState('')
     const [errors, setErrors] = useState([])
+    const [image, setImage] = useState('')
+    const [imageUrl, setImageUrl] = useState('')
     useEffect(() => {
         //create
         if (router.query.id) {
@@ -27,6 +30,9 @@ const Create = () => {
                     setFullName(res.data.author.full_name)
                     setBirthDate(res.data.author.birth_date)
                     setCountry(res.data.author.country)
+                    if (res.data.image != null) {
+                        setImageUrl('http://127.0.0.1:8000' + res.data.image)
+                    }
                 })
                 .catch(error => {
                     if (error.response.status != 409) throw error
@@ -37,6 +43,7 @@ const Create = () => {
     const submitForm = async (event) => {
         event.preventDefault()
         const data = new FormData()
+        data.append('image', image ? image : '')
         data.append('full_name', full_name)
         data.append('birth_date', birth_date)
         data.append('country', country)
@@ -44,13 +51,18 @@ const Create = () => {
             create(data, setErrors)
         } else {
             data.append('_method', 'put')
-            edit( data, setErrors, router.query.id)
+            edit(data, setErrors, router.query.id)
         }
         // const data = new FormData()
         // data.append('full_name', full_name)
         // data.append('birth_date', birth_date)
         // data.append('country', country)
         // create(data, setErrors)
+    }
+
+    const onChangeHandler = event => {
+        setImageUrl(URL.createObjectURL(event.target.files[0]))
+        setImage(event.target.files[0])
     }
 
     return (
@@ -105,6 +117,16 @@ const Create = () => {
                                             placeholder="País"
                                         />
                                     </div>
+                                    <div className="mb-3 w-96">
+                                        <Label htmlFor="image">Imagen</Label>
+                                        <ImageInput
+                                            id="image"
+                                            type="file"
+                                            className="block mt-1 w-full"
+                                            onChange={onChangeHandler}
+                                        />
+                                    </div>
+                                    <img src={imageUrl} className="rounded-lg w-48 py-2" />
                                     <Button>Guardar Author</Button>
                                 </div>
                             </form>

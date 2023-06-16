@@ -14,6 +14,7 @@ const Show = () => {
     const [biography, setBiography] = useState('')
     const [website, setWebsite] = useState('')
     const [email, setEmail] = useState('')
+    const [image, setImage] = useState('')
 
     useEffect(() => {
         if (router.isReady) {
@@ -23,6 +24,9 @@ const Show = () => {
                     setFullName(res.data.author.full_name)
                     setBirthDate(FormatDate(res.data.author.birth_date))
                     setCountry(res.data.author.country)
+                    if (res.data.image != null){
+                        setImage('http://127.0.0.1:8000' + res.data.image)
+                    }
                     if (res.data.author.profile != null){
                         setCareer(res.data.author.profile.career)
                         setBiography(res.data.author.profile.biography)
@@ -69,6 +73,7 @@ const Show = () => {
                                     ) : (
                                         <p>El author no tiene aún un perfil registrado</p>
                                     )}
+                                    <img src= { image} className="rounded-lg w-64"/>
                                     <div className="flex justify-end ">
                                         <PreviousLink href="/authors"></PreviousLink>
                                     </div>
