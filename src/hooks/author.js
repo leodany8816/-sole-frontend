@@ -74,9 +74,44 @@ export const authorAPI = () => {
                 toast.success(res.data.message);
             })
             .catch(error => {
-                if(error.response.status !== 422 ) throw error
+                if (error.response.status !== 422) throw error
                 toast.error(error.response.data.message)
             })
     }
-    return { create, edit, destroy }
+
+    const createProfile = async ({ setErrors, ...props }) => {
+        setErrors([])
+        axios
+            .post(`/api/profiles`, props)
+            .then(res => {
+                toast.success(res.data.message)
+                router.push(`/authors`)
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                toast.error("Error al crear el Formulario");
+            })
+    }
+
+    const editProfile = async ({ setErrors, ...props }, id) => {
+        setErrors([])
+        axios
+            .put(`/api/profiles/${id}`, props)
+            .then(res => {
+                toast.error(res.data.message)
+                router.push('/authors')
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                toast.error(error.response.data.message)
+            })
+    }
+    return {
+        create,
+        edit,
+        destroy,
+        createProfile,
+        editProfile
+    }
 }

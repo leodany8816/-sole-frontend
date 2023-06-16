@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import axios from '@/lib/axios'
@@ -9,6 +10,11 @@ const Show = () => {
     const [full_name, setFullName] = useState('')
     const [birth_date, setBirthDate] = useState('')
     const [country, setCountry] = useState('')
+    const [career, setCareer] = useState('')
+    const [biography, setBiography] = useState('')
+    const [website, setWebsite] = useState('')
+    const [email, setEmail] = useState('')
+
     useEffect(() => {
         if (router.isReady) {
             axios
@@ -17,6 +23,12 @@ const Show = () => {
                     setFullName(res.data.author.full_name)
                     setBirthDate(FormatDate(res.data.author.birth_date))
                     setCountry(res.data.author.country)
+                    if (res.data.author.profile != null){
+                        setCareer(res.data.author.profile.career)
+                        setBiography(res.data.author.profile.biography)
+                        setWebsite(res.data.author.profile.website)
+                        setEmail(res.data.author.profile.email)
+                    }
                 })
                 .catch(error => {
                     if (error.response.status !== 409) throw error
@@ -46,6 +58,17 @@ const Show = () => {
                                     <h3><strong>{full_name}</strong></h3>
                                     <p><strong>Fecha Nacimiento:</strong> {birth_date}</p>
                                     <p><strong>País:</strong> {country}</p>
+                                    <h3><strong>Perfil Author</strong></h3>
+                                    { career != '' ? (
+                                        <div>
+                                            <p><strong>Carrera: </strong>{ career }</p>
+                                            <p><strong>Biografia: </strong>{ biography }</p>
+                                            <p><strong>Página Web: </strong>{ website }</p>
+                                            <p><strong>Correo Electrónico: </strong>{ email }</p>
+                                        </div>
+                                    ) : (
+                                        <p>El author no tiene aún un perfil registrado</p>
+                                    )}
                                     <div className="flex justify-end ">
                                         <PreviousLink href="/authors"></PreviousLink>
                                     </div>

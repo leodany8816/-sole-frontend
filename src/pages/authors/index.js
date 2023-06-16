@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ViewLink from '@/components/ViewLink';
 import EditLink from "@/components/EditLink";
 import DeleteButton from "@/components/DeleteButton";
+import ProfileLink from "../ProfileLink";
 
 const Index = () => {
     const { destroy } = authorAPI()
@@ -26,10 +27,10 @@ const Index = () => {
             })
     }, [])
 
-    function destroyItem(id){
-        if(confirm('Seguro que deseas eleminar el registro?')){
+    function destroyItem(id) {
+        if (confirm('Seguro que deseas eleminar el registro?')) {
             destroy(id)
-            setAuthors([...authors.filter((author)=> author.id !== id)])
+            setAuthors([...authors.filter((author) => author.id !== id)])
         }
     }
 
@@ -110,6 +111,11 @@ const Index = () => {
                                                     destroyItem(author.id)
                                                 }}>
                                                 </DeleteButton>
+                                                <ProfileLink href={{
+                                                    pathname: `/authors/[id]/profile/create`,
+                                                    query: { id: author.id }
+                                                }} as={`/authors/${author.id}/profile/create`}>
+                                                </ProfileLink>
                                             </td>
                                         </tr>
                                     ))}
