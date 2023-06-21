@@ -11,6 +11,9 @@ import EditLink from "@/components/EditLink";
 import DeleteButton from "@/components/DeleteButton";
 import ProfileLink from "../ProfileLink";
 import NoteLink from "@/components/NoteLink";
+import Star from "@/components/Star"
+import NotStar from "@/components/NotStar";
+import RatingLink from "@/components/RatingLink";
 
 const Index = () => {
     const { destroy } = authorAPI()
@@ -39,6 +42,29 @@ const Index = () => {
         const date = new Date(data.replace(/-/g, '\/'))
         const option = { year: "numeric", month: "2-digit", day: "2-digit" }
         return date.toLocaleDateString('es-MX', option)
+    }
+
+    function averageStar(ratings) {
+        let average = 0
+        let count = 0
+        ratings?.map((rating) => (
+            average = average + parseInt(rating.number_star),
+            count = count + 1
+        ))
+        if (count > 0) {
+            return parseInt(average / count)
+        }
+        else {
+            return parseInt(0)
+        }
+    }
+
+    function numberStar(ratings) {
+        let count = 0
+        ratings?.map((rating) => (
+            count = count + 1
+        ))
+        return parseInt(count)
     }
 
     return (
@@ -76,6 +102,9 @@ const Index = () => {
                                             Pais
                                         </th>
                                         <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                            Puntuación
+                                        </th>
+                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
                                             Acción
                                         </th>
                                     </tr>
@@ -92,6 +121,19 @@ const Index = () => {
                                             <td className="text-sm text-gray-900 font-light px-6 py-4">
                                                 {author.country}
                                             </td>
+                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                <ul className="flex justify-center">
+                                                    {[...Array(averageStar(author.ratings))].map((star, index) => (
+                                                        <Star key={index} className="w-4">
+                                                        </Star>
+                                                    ))}
+                                                    {[...Array(5 - averageStar(author.ratings))].map((star, index) => (
+                                                        <NotStar key={index} className="w-4">
+                                                        </NotStar>
+                                                    ))}
+                                                    ({numberStar(author.ratings)})
+                                                </ul>
+                                            </td>
                                             <td className="flex space-x-2 text-sm text-gray-900 font-light px-6 py-4">
                                                 <ViewLink href={{
                                                     pathname: '/authors/show/[id]', query: {
@@ -107,11 +149,6 @@ const Index = () => {
                                                     }
                                                 }} as={`/authors/edit/${author.id}`}>
                                                 </EditLink>
-                                                <DeleteButton onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    destroyItem(author.id)
-                                                }}>
-                                                </DeleteButton>
                                                 <ProfileLink href={{
                                                     pathname: `/authors/[id]/profile/create`,
                                                     query: { id: author.id }
@@ -124,6 +161,14 @@ const Index = () => {
                                                     }
                                                 }} as={`/authors/${author.id}/notes`}>
                                                 </NoteLink>
+                                                <RatingLink href={{ pathname: `/authors/[id]/ratings/create`, query: { id: author.id }
+                                                }} as={`/authors/${author.id}/ratings/create`}>
+                                                </RatingLink>
+                                                <DeleteButton onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    destroyItem(author.id)
+                                                }}>
+                                                </DeleteButton>
                                             </td>
                                         </tr>
                                     ))}
