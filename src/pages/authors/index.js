@@ -10,6 +10,7 @@ import ViewLink from '@/components/ViewLink';
 import EditLink from "@/components/EditLink";
 import DeleteButton from "@/components/DeleteButton";
 import ProfileLink from "../ProfileLink";
+import NoteLink from "@/components/NoteLink";
 
 const Index = () => {
     const { destroy } = authorAPI()
@@ -116,6 +117,13 @@ const Index = () => {
                                                     query: { id: author.id }
                                                 }} as={`/authors/${author.id}/profile/create`}>
                                                 </ProfileLink>
+                                                <NoteLink href={{
+                                                    pathname: `/authors/[id]/notes`, query: {
+                                                        id:
+                                                            author.id
+                                                    }
+                                                }} as={`/authors/${author.id}/notes`}>
+                                                </NoteLink>
                                             </td>
                                         </tr>
                                     ))}
