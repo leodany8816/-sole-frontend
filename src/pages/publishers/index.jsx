@@ -6,41 +6,42 @@ import Router from 'next/router'
 import Button from '@/components/Button'
 import ViewLink from '@/components/ViewLink'
 import EditLink from '@/components/EditLink'
-import { genreAPI } from '@/hooks/genre'
+import { publisherAPI } from '@/hooks/publisher'
 import DeleteButton from '@/components/DeleteButton'
 import toast, { Toaster } from 'react-hot-toast';
 
 const Index = () => {
-    const [genres, setGenres] = useState([])
-    const { destroy } = genreAPI()
+    const [publishers, setPublishers] = useState([])
+    const { destroy } = publisherAPI()
+
+    function destroyItem(id) {
+        if (confirm('¿Seguro que desea eliminar la editorial?')) {
+            destroy(id)
+            setPublishers([...publishers.filter((publisher) => publisher.id !== id)])
+        }
+    }
+
     useEffect(() => {
         axios
-            .get('/api/genres')
+            .get('/api/publishers')
             .then(res => {
-                setGenres(res.data)
+                setPublishers(res.data)
             })
             .catch(error => {
                 if (error.response.status !== 409) throw error
             })
     }, [])
 
-    function destroyItem(id) {
-        if (confirm('¿Seguro que desea eliminar este género?')) {
-            destroy(id)
-            setGenres([...genres.filter((genre) => genre.id !== id)])
-        }
-    }
-
     return (
         <AppLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Géneros Literarios
+                    Editoriales
                 </h2>
             }>
-            <Toaster />
+
             <Head>
-                <title>Laravel - Genre</title>
+                <title>Laravel - Publishers</title>
             </Head>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -48,20 +49,27 @@ const Index = () => {
                         <div className="p-6 bg-white border-b border-gray-200">
                         <div class="overflow-x-auto">
                             <div className="flex space-x-2 justify-start">
+                                <Toaster />
                                 <Button
                                     type="button"
-                                    onClick={() => Router.push('/genres/create', '/genres/create')}>
-                                    Nuevo Género literario
+                                    onClick={() => Router.push('/publishers/create', '/publishers/create')}>
+                                    Nueva Editorial
                                 </Button>
                             </div>
                                 <table className="min-w-full">
                                     <thead className="border-b bg-gray-50">
                                         <tr>
                                             <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                                Género Literario
+                                                Editorial
                                             </th>
                                             <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                                Descripción
+                                                País
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Sitio Web
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Correo Electrónico
                                             </th>
                                             <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
                                                 Acción
@@ -69,26 +77,32 @@ const Index = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {genres?.map((genre) => (
-                                            <tr className="bg-white border-b" key={genre.id}>
+                                        {publishers?.map((publisher) => (
+                                            <tr className="bg-white border-b" key={publisher.id}>
                                                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                    {genre.name}
+                                                    {publisher.name}
                                                 </td>
                                                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                    {genre.description}
+                                                    {publisher.country}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    {publisher.website}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    {publisher.email}
                                                 </td>
                                                 <td className="flex space-x-2 text-sm text-gray-900 font-light px-6 py-4">
                                                     <ViewLink href={{
-                                                        pathname: `/genres/show/[id]`, query: { id: genre.id }
-                                                    }} as={`/genres/show/${genre.id}`}>
+                                                        pathname: `/publishers/show/[id]`, query: { id: publisher.id }
+                                                    }} as={`/publishers/show/${publisher.id}`}>
                                                     </ViewLink>
                                                     <EditLink href={{
-                                                        pathname: `/genres/edit/[id]`, query: { id: genre.id }
-                                                    }} as={`/genres/edit/${genre.id}`}>
+                                                        pathname: `/publishers/edit/[id]`, query: { id: publisher.id }
+                                                    }} as={`/publishers/edit/${publisher.id}`}>
                                                     </EditLink>
                                                     <DeleteButton onClick={(e) => {
                                                         e.stopPropagation()
-                                                        destroyItem(genre.id)
+                                                        destroyItem(publisher.id)
                                                     }}>
                                                     </DeleteButton>
                                                 </td>
