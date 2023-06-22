@@ -12,7 +12,6 @@ export const authorAPI = () => {
         axios
             .post('/api/authors', data)
             .then(res => {
-                // addToast(res.data.message)
                 toast.success(res.data.message);
                 router.push('/authors')
             })
