@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import axios from '@/lib/axios'
 import { useEffect, useState } from 'react'
 import PreviousLink from '@/components/PreviousLink'
+import FormDate from '@/components/FormaDate'
 
 const Show = () => {
     const router = useRouter()
@@ -22,7 +23,8 @@ const Show = () => {
                 .get(`/api/authors/${router.query.id}`)
                 .then(res => {
                     setFullName(res.data.author.full_name)
-                    setBirthDate(FormatDate(res.data.author.birth_date))
+                    // setBirthDate(FormatDate(res.data.author.birth_date))
+                    setBirthDate(res.data.author.birth_date)
                     setCountry(res.data.author.country)
                     if (res.data.image != null){
                         setImage('http://127.0.0.1:8000' + res.data.image)
@@ -40,11 +42,15 @@ const Show = () => {
         }
     }, [router.isReady])
 
-    function FormatDate(data) {
+    /**
+     * Esta funcion se convertio en un componente 
+     * 
+    function FormDate(data) {
         const date = new Date(data.replace(/-/g, '\/'))
-        const options = { year: "numeric", month: "2-digit", day: "2-digit" }
-        return date.toLocaleDateString('es-MX', options)
+        const option = { year: "numeric", month: "2-digit", day: "2-digit" }
+        return date.toLocaleDateString('es-MX', option)
     }
+    */
 
     return (
         <AppLayout
@@ -60,7 +66,7 @@ const Show = () => {
                             <div className="flex justify-between py-3">
                                 <div>
                                     <h3><strong>{full_name}</strong></h3>
-                                    <p><strong>Fecha Nacimiento:</strong> {birth_date}</p>
+                                    <p><strong>Fecha Nacimiento:</strong> <FormDate data={birth_date} /></p>
                                     <p><strong>País:</strong> {country}</p>
                                     <h3><strong>Perfil Author</strong></h3>
                                     { career != '' ? (

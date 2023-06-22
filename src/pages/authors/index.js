@@ -14,6 +14,7 @@ import NoteLink from "@/components/NoteLink";
 import Star from "@/components/Star"
 import NotStar from "@/components/NotStar";
 import RatingLink from "@/components/RatingLink";
+import FormDate from "@/components/FormaDate";
 
 const Index = () => {
     const { destroy } = authorAPI()
@@ -38,11 +39,15 @@ const Index = () => {
         }
     }
 
+    /**
+     * Esta funcion se convertio en un componente 
+     * 
     function FormDate(data) {
         const date = new Date(data.replace(/-/g, '\/'))
         const option = { year: "numeric", month: "2-digit", day: "2-digit" }
         return date.toLocaleDateString('es-MX', option)
     }
+    */
 
     function averageStar(ratings) {
         let average = 0
@@ -116,7 +121,8 @@ const Index = () => {
                                                 {author.full_name}
                                             </td>
                                             <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                {FormDate(author.birth_date)}
+                                                {/* {FormDate(author.birth_date)} */}
+                                                <FormDate data={author.birth_date} />
                                             </td>
                                             <td className="text-sm text-gray-900 font-light px-6 py-4">
                                                 {author.country}

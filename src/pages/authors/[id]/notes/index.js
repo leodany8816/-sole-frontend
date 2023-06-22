@@ -9,6 +9,7 @@ import DeleteButton from '@/components/DeleteButton';
 import Button from '@/components/Button';
 import toast, { Toaster } from 'react-hot-toast';
 import { noteAPI } from '@/hooks/note'
+import FormDate from '@/components/FormaDate';
 
 const Index = () => {
     const { destroyAuthor } = noteAPI()
@@ -33,11 +34,15 @@ const Index = () => {
         }
     }, [router.isReady])
 
-    function FormatDate(data) {
+    /**
+     * Esta funcion se convertio en un componente 
+     * 
+    function FormDate(data) {
         const date = new Date(data.replace(/-/g, '\/'))
-        const options = { year: "numeric", month: "2-digit", day: "2-digit" }
-        return date.toLocaleDateString('es-MX', options)
+        const option = { year: "numeric", month: "2-digit", day: "2-digit" }
+        return date.toLocaleDateString('es-MX', option)
     }
+    */
 
     function destroyItem(id) {
         if (confirm('¿Seguro que desea eliminar la nota?')) {
@@ -73,7 +78,8 @@ const Index = () => {
                                     {notes?.map((note) => (
                                         <tr className="bg-white border-b" key={note.id}>
                                             <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">Fecha: ({FormatDate(note.writing_date)})</h5>
+                                                {/* <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">Fecha: ({FormatDate(note.writing_date)})</h5> */}
+                                                <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">Fecha: <FormDate data={note.writing_date} /></h5>
                                                 {note.description}
                                             </td>
                                             <td className="flex space-x-2 text-sm text-gray-900 font-light px-6 py-4">
