@@ -42,6 +42,11 @@ const Navigation = ({ user }) => {
                                 active={router.pathname === '/authors'}>
                                 Autores
                             </NavLink>
+                            <NavLink
+                                href="/books"
+                                active={router.pathname === '/books'}>
+                                Libros
+                            </NavLink>
                             <NavLink href="/genres"
                                 active={router.pathname === '/genres'}>
                                 Géneros Literarios
@@ -50,11 +55,6 @@ const Navigation = ({ user }) => {
                                 href="/publishers"
                                 active={router.pathname === '/publishers'}>
                                 Editoriales
-                            </NavLink>
-                            <NavLink
-                                href="/books"
-                                active={router.pathname === '/books'}>
-                                Libros
                             </NavLink>
                         </div>
                     </div>
@@ -136,6 +136,11 @@ const Navigation = ({ user }) => {
                             active={router.pathname === '/authors'}>
                             Autores
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/books"
+                            active={router.pathname === '/books'}>
+                            Libros
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink href="/genres"
                             active={router.pathname === '/genres'}>
                             Géneros Literarios
@@ -144,11 +149,6 @@ const Navigation = ({ user }) => {
                             href="/publishers"
                             active={router.pathname === '/publishers'}>
                             Editoriales
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href="/books"
-                            active={router.pathname === '/books'}>
-                            Libros
                         </ResponsiveNavLink>
                     </div>
 
