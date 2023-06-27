@@ -48,9 +48,54 @@ export const noteAPI = () => {
             })
     }
 
+    const createBook = async ({ setErrors, ...props }) => {
+        setErrors([])
+        axios
+            .post('/api/books/notes', props)
+            .then(res => {
+                toast.success(res.data.message)
+                router.push(`/books/${props.book.id}/notes`)
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                toast.error('Error al crear la nota')
+            })
+    }
+
+    const editBook = async ({ setErrors, ...props }, id) => {
+        setErrors([])
+        axios
+            .put(`/api/books/notes/${id}`, props)
+            .then(res => {
+                toast.success(res.data.message)
+                router.push(`/books/${props.book.id}/notes`)
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                toast.error('Error al editar la nota')
+            })
+    }
+
+    const destroyBook = async (id) => {
+        axios
+            .delete(`/api/books/notes/${id}`)
+            .then(res => {
+                toast.success(res.data.message);
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                toast.error('Error al eliminar la nota')
+            })
+    }
+
     return {
         createAuthor,
         editAuthor,
-        destroyAuthor
+        destroyAuthor,
+        createBook,
+        editBook,
+        destroyBook
     }
 }

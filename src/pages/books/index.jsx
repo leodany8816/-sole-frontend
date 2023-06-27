@@ -40,14 +40,14 @@ const Index = () => {
     }
     */
 
-    function averageStar(ratings){
+    function averageStar(ratings) {
         let average = 0
         let count = 0
         ratings?.map((rating) => (
             average = average + parseInt(rating.number_star),
-                count = count + 1
+            count = count + 1
         ))
-        if(count > 0){
+        if (count > 0) {
             return parseInt(average / count)
         }
         else {
@@ -55,7 +55,7 @@ const Index = () => {
         }
     }
 
-    function numberStar(ratings){
+    function numberStar(ratings) {
         let count = 0
         ratings?.map((rating) => (
             count = count + 1
@@ -80,94 +80,100 @@ const Index = () => {
             <Head>
                 <title>Laravel - Book</title>
             </Head>
-            <Toaster/>
+            <Toaster />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white border-b border-gray-200">
-                            <div className="flex space-x-2 justify-start">
-                                <Button
-                                    type="button"
-                                    onClick={() => Router.push('/books/create', '/books/create')}>
-                                    Nuevo Libro
-                                </Button>
-                            </div>
-                            <table className="min-w-full">
-                                <thead className="border-b bg-gray-50">
-                                    <tr>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Libro
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Lenguaje
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Nº Páginas
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Fecha Publicación
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Puntuación
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
-                                            Acción
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { books?.map((book) => (
-                                        <tr className="bg-white border-b" key={book.id}>
-                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                <h3>{ book.title }</h3>
-                                                <p>{ book.subtitle }</p>
-                                            </td>
-                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                { book.language }
-                                            </td>
-                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                { book.page }
-                                            </td>
-                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                {/* { FormatDate(book.published)} */}
-                                                <FormDate data={book.published} />
-                                            </td>
-                                            <td className="text-sm text-gray-900 font-light px-6 py-4">
-                                                <ul className="flex justify-center">
-                                                    {[...Array(averageStar(book.ratings))].map((star, index) =>(
-                                                        <Star key={ index } className="w-4">
-                                                        </Star>
-                                                    ))}
-                                                    {[...Array(5 - averageStar(book.ratings))].map((star, index) =>(
-                                                        <NotStar key={ index } className="w-4">
-                                                        </NotStar>
-                                                    ))}
-                                                    ({ numberStar(book.ratings)})
-                                                </ul>
-                                            </td>
-                                            <td className="flex space-x-2 text-sm text-gray-900 font-light px-6 py-4">
-                                                <ViewLink href={{ pathname:`/books/show/[id]`, query: { id: book.id }
-                                                }} as={`/books/show/${book.id}`}>
-                                                </ViewLink>
-                                                <EditLink href={{ pathname:`/books/edit/[id]`, query: { id: book.id }
-                                                }} as={`/books/edit/${book.id}`}>
-                                                </EditLink>
-                                                <NoteLink href={{ pathname: `/books/[id]/notes`, query: { id: book.id }
-                                                }} as={`/books/${book.id}/notes`}>
-                                                </NoteLink>
-                                                <RatingLink href={{ pathname: `/books/[id]/ratings/create`, query: { id: book.id }
-                                                }} as={`/books/${book.id}/ratings/create`}>
-                                                </RatingLink>
-                                                <DeleteButton onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    destroyItem(book.id)
-                                                }}>
-                                                </DeleteButton>
-                                            </td>
+                            <div class="overflow-x-auto">
+                                <div className="flex space-x-2 justify-start">
+                                    <Button
+                                        type="button"
+                                        onClick={() => Router.push('/books/create', '/books/create')}>
+                                        Nuevo Libro
+                                    </Button>
+                                </div>
+                                <table className="min-w-full">
+                                    <thead className="border-b bg-gray-50">
+                                        <tr>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Libro
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Lenguaje
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Nº Páginas
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Fecha Publicación
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Puntuación
+                                            </th>
+                                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4">
+                                                Acción
+                                            </th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {books?.map((book) => (
+                                            <tr className="bg-white border-b" key={book.id}>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    <h3>{book.title}</h3>
+                                                    <p>{book.subtitle}</p>
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    {book.language}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    {book.page}
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    {/* { FormatDate(book.published)} */}
+                                                    <FormDate data={book.published} />
+                                                </td>
+                                                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                                                    <ul className="flex justify-center">
+                                                        {[...Array(averageStar(book.ratings))].map((star, index) => (
+                                                            <Star key={index} className="w-4">
+                                                            </Star>
+                                                        ))}
+                                                        {[...Array(5 - averageStar(book.ratings))].map((star, index) => (
+                                                            <NotStar key={index} className="w-4">
+                                                            </NotStar>
+                                                        ))}
+                                                        ({numberStar(book.ratings)})
+                                                    </ul>
+                                                </td>
+                                                <td className="flex space-x-2 text-sm text-gray-900 font-light px-6 py-4">
+                                                    <ViewLink href={{
+                                                        pathname: `/books/show/[id]`, query: { id: book.id }
+                                                    }} as={`/books/show/${book.id}`}>
+                                                    </ViewLink>
+                                                    <EditLink href={{
+                                                        pathname: `/books/edit/[id]`, query: { id: book.id }
+                                                    }} as={`/books/edit/${book.id}`}>
+                                                    </EditLink>
+                                                    <NoteLink href={{
+                                                        pathname: `/books/[id]/notes`, query: { id: book.id }
+                                                    }} as={`/books/${book.id}/notes`}>
+                                                    </NoteLink>
+                                                    <RatingLink href={{
+                                                        pathname: `/books/[id]/ratings/create`, query: { id: book.id }
+                                                    }} as={`/books/${book.id}/ratings/create`}>
+                                                    </RatingLink>
+                                                    <DeleteButton onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        destroyItem(book.id)
+                                                    }}>
+                                                    </DeleteButton>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

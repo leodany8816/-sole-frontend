@@ -46,7 +46,6 @@ export const bookAPI = () => {
                 toast.error('Error al eliminar el formulario')
             })
     }
-
     return {
         create,
         edit,
