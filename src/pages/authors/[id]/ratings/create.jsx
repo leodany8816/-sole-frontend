@@ -76,23 +76,17 @@ const Create = () => {
                                 <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
                                     <div className="mb-3 xl:w-96">
                                         <Label htmlFor="description">Estrellas: </Label>
-                                        <Select onChange={(val) => starChose(val.target.value)} value={stars}>
-                                            <option value="1">Uno</option>
-                                            <option value="2">Dos</option>
-                                            <option value="3">Tres</option>
-                                            <option value="4">Cuatro</option>
-                                            <option value="5">Cinco</option>
-                                        </Select>
                                     </div>
                                     <div className="mb-3 xl:w-96">
                                         <ul className="flex">
-                                            {[...Array(parseInt(stars))].map((star, index1) => (
-                                                <Star key={index1} className="w-8">
-                                                </Star>
-                                            ))}
-                                            {[...Array(5 - stars)].map((star, index) => (
-                                                <NotStar key={index} className="w-8">
-                                                </NotStar>
+                                            {[...Array(5)].map((_, index) => (
+                                                <div
+                                                    key={index}
+                                                    onClick={() => starChose(index + 1)}
+                                                    className="cursor-pointer w-8"
+                                                >
+                                                    {index + 1 <= stars ? <Star /> : <NotStar />}
+                                                </div>
                                             ))}
                                         </ul>
                                     </div>
