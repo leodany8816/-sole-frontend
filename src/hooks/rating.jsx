@@ -36,40 +36,40 @@ export const ratingAPI = () => {
             })
     }
 
-    // const createBook = async ({ setErrors, ...props }) => {
-    //     setErrors([])
-    //     axios
-    //         .post('/api/books/ratings', props)
-    //         .then(res => {
-    //             addToast(res.data.message, { appearance: 'success', autoDismiss: true })
-    //             router.push('/books')
-    //         })
-    //         .catch(error => {
-    //             if (error.response.status !== 422) throw error
-    //             setErrors(Object.values(error.response.data.errors).flat())
-    //             addToast('Error al crear el Formulario', { appearance: 'error', autoDismiss: true })
-    //         })
-    // }
+    const createBook = async ({ setErrors, ...props }) => {
+        setErrors([])
+        axios
+            .post('/api/books/ratings', props)
+            .then(res => {
+                toast.success(res.data.message)
+                router.push('/books')
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                toast.error('Erro al guardar la puntuación')
+            })
+    }
 
-    // const editBook = async ({ setErrors, ...props }, id) => {
-    //     setErrors([])
-    //     axios
-    //         .put(`/api/books/ratings/${id}`, props)
-    //         .then(res => {
-    //             addToast(res.data.message, { appearance: 'success', autoDismiss: true })
-    //             router.push('/books')
-    //         })
-    //         .catch(error => {
-    //             if (error.response.status !== 422) throw error
-    //             setErrors(Object.values(error.response.data.errors).flat())
-    //             addToast('Error al editar el Formulario', { appearance: 'error', autoDismiss: true })
-    //         })
-    // }
+    const editBook = async ({ setErrors, ...props }, id) => {
+        setErrors([])
+        axios
+            .put(`/api/books/ratings/${id}`, props)
+            .then(res => {
+                toast.success(res.data.message)
+                router.push('/books')
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                toast.error('Error al guardar la puntuación')
+            })
+    }
 
     return {
         createAuthor,
         editAuthor,
-        // createBook,
-        // editBook,
+        createBook,
+        editBook,
     }
 }
