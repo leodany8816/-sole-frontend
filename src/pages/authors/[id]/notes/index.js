@@ -51,6 +51,22 @@ const Index = () => {
         }
     }
 
+    const exportExcel = async () => {
+        const res = await axios.get(`/api/authors/${author_id}/notes/generateexcel`, { responseType: "blob" })
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'NotasDeAutor.xlsx')
+        document.body.appendChild(link)
+        link.click()
+    }
+
+    const printPDF = async () => {
+        const res = await axios.get(`/api/authors/${author_id}/notes/generatepdf`, { responseType: "blob" })
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
+        window.open(url, '_blank')
+    }
+
     return (
         <AppLayout
             header={
@@ -58,7 +74,7 @@ const Index = () => {
                     Notas de autor: {full_name}
                 </h2>
             }>
-                <Toaster/>
+            <Toaster />
             <Head>
                 <title>Laravel - Author</title>
             </Head>
@@ -71,6 +87,22 @@ const Index = () => {
                                     type="button"
                                     onClick={() => router.push('/authors/[id]/notes/create', `/authors/${author_id}/notes/create`)}>
                                     Nueva Nota de autor
+                                </Button>
+                                <Button
+                                    className="bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        printPDF()
+                                    }}>
+                                    Imprimir en PDF
+                                </Button>
+                                <Button
+                                    className="bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        exportExcel()
+                                    }}>
+                                    Exportar a Excel
                                 </Button>
                             </div>
                             <table className="min-w-full">
