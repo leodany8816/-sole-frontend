@@ -70,17 +70,41 @@ const Index = () => {
         }
     }
 
+    //PDF Libros
     const printPDF = async () => {
         const res = await axios.get('/api/books/generatebookpdf', { responseType: "blob"})
         const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
         window.open(url, '_blank')
     }
 
+    //PDF Libros con raiting
     const printPDFRaiting = async () => {
         const res = await axios.get('/api/books/generatebookpdfraiting', { responseType: "blob"})
         const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
         window.open(url, '_blank') 
     }
+
+    //Excel Libros
+        const exportExcel = async () => {
+        const res = await axios.get(`/api/books/generateExcel`, { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'Libros.xlsx')
+        document.body.appendChild(link)
+        link.click()
+    }
+
+    //Excel Libros Raiting
+        const exportExcelRaiting = async () => {
+        const res = await axios.get(`/api/books/generateExcelRaitings`, { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'LibrosRaitings.xlsx')
+        document.body.appendChild(link)
+        link.click()
+        }
 
     return (
         <AppLayout
@@ -119,6 +143,22 @@ const Index = () => {
                                         printPDFRaiting()
                                     }}>
                                     Imprimir PDF <br/> Raiting Libros
+                                    </Button>
+                                    <Button
+                                    className="bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        exportExcel()
+                                    }}>
+                                    Exportar a Excel <br/> Libros
+                                    </Button>
+                                    <Button
+                                    className="bg-black-600 bg-black-600 hover:bg-black-700 focus:bg-black-700 active:bg-black-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        exportExcelRaiting()
+                                    }}>
+                                    Exportar a Excel <br/> Libros Raiting
                                     </Button>
                                 </div>
                                 <table className="min-w-full">
