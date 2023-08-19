@@ -1,7 +1,7 @@
 import axios from "@/lib/axios";
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from "next/router";
-import { async } from "rxjs";
+//import { async } from "rxjs";
 
 export const authorAPI = () => {
     const notify = () => toast.success("Sucess!");

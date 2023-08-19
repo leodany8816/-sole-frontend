@@ -70,6 +70,18 @@ const Index = () => {
         }
     }
 
+    const printPDF = async () => {
+        const res = await axios.get('/api/books/generatebookpdf', { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
+        window.open(url, '_blank')
+    }
+
+    const printPDFRaiting = async () => {
+        const res = await axios.get('/api/books/generatebookpdfraiting', { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
+        window.open(url, '_blank') 
+    }
+
     return (
         <AppLayout
             header={
@@ -91,6 +103,22 @@ const Index = () => {
                                         type="button"
                                         onClick={() => Router.push('/books/create', '/books/create')}>
                                         Nuevo Libro
+                                    </Button>
+                                    <Button
+                                    className="bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        printPDF()
+                                    }}>
+                                    Imprimir en PDF
+                                    </Button>
+                                    <Button
+                                    className="bg-black-600 hover:bg-black-700 focus:bg-black-700 active:bg-black-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        printPDFRaiting()
+                                    }}>
+                                    Imprimir PDF <br/> Raiting Libros
                                     </Button>
                                 </div>
                                 <table className="min-w-full">
