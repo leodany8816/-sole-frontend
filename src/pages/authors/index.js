@@ -72,6 +72,39 @@ const Index = () => {
         return parseInt(count)
     }
 
+    const printPDF = async () => {
+        const res = await axios.get('/api/authors/generateAutorPDF', { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
+        window.open(url, '_blank')
+    } 
+
+        //PDF Autor con raiting
+    const printPDFRaiting = async () => {
+        const res = await axios.get('/api/authors/generateAutorPDFRaiting', { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }))
+        window.open(url, '_blank') 
+    }
+
+    const exportExcel = async () => {
+        const res = await axios.get(`/api/authors/generateExcel`, { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'Autores.xlsx')
+        document.body.appendChild(link)
+        link.click()
+    }
+
+    const exportExcelRaiting = async () => {
+        const res = await axios.get(`/api/authors/generateExcelRaitings`, { responseType: "blob"})
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'AutoresRaitings.xlsx')
+        document.body.appendChild(link)
+        link.click()
+    }
+
     return (
         <AppLayout
             header={
@@ -93,6 +126,39 @@ const Index = () => {
                                     onClick={() => Router.push('/authors/create', '/authors/create')}>
                                     Nuevo Autor
                                 </Button>
+
+                                <Button
+                                className="bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    printPDF()
+                                }}>
+                                Imprimir en PDF
+                                </Button>
+                                <Button
+                                className="bg-black-600 hover:bg-black-700 focus:bg-black-700 active:bg-black-800"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    printPDFRaiting()
+                                }}>
+                                Imprimir PDF <br/> Raiting Autores
+                                </Button>
+                                <Button
+                                className="bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                        exportExcel()
+                                    }}>
+                                    Exportar a Excel <br/> Autores
+                                    </Button>
+                                    <Button
+                                    className="bg-black-600 bg-black-600 hover:bg-black-700 focus:bg-black-700 active:bg-black-800"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                            exportExcelRaiting()
+                                        }}>
+                                        Exportar a Excel <br/> Libros Raiting
+                                        </Button>
                             </div>
                             <table className="min-w-full">
                                 <thead className="border-b bg-gray-50">
